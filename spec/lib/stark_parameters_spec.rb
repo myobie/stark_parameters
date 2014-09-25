@@ -128,6 +128,19 @@ describe StarkParameters do
     it { expect(validator.params.to_hash).to include("foo" => "bar") }
   end
 
+  context "with array as permitted value" do
+    let(:test_klass) do
+      Class.new do
+        include StarkParameters
+
+        permit :names
+      end
+    end
+
+    let(:validator) { test_klass.new(names: ["Bob", "Fred"]) }
+    it { expect(validator.params.to_hash).to include("names" => ["Bob", "Fred"]) }
+  end
+
   context "with empty permitted value" do
     let(:test_klass) do
       Class.new do
